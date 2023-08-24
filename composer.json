@@ -1,0 +1,24 @@
+{
+  "name": "jeyroik/df-templates-html",
+  "description": "HTML templates fot DF",
+  "require": {
+    "jeyroik/df-templates": "0.*",
+    "jeyroik/df-templates-triggers": "0.*",
+    "jeyroik/df-applications": "4.*",
+    "jeyroik/extas-system-options": "0.*",
+    "jeyroik/df-triggers": "3.*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9",
+    "jeyroik/extas-snuffbox": "1.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "deflou\\": "src/",
+      "tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit --testdox --coverage-clover=coverage.xml --whitelist=src tests"
+  }
+}
