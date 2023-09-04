@@ -66,8 +66,8 @@ class TemplateHtmlTest extends ExtasTestCase
             SystemOption::FIELD__VALUE => __DIR__ . '/../resources/items.php'
         ]));
 
-        $opService = new TemplateService();
-        $opService->plugins()->create(new Plugin([
+        $tService = new TemplateService();
+        $tService->plugins()->create(new Plugin([
             Plugin::FIELD__CLASS => PluginTemplateHtmlEvent::class,
             Plugin::FIELD__STAGE => PluginTemplateHtmlEvent::STAGE,
             Plugin::FIELD__PARAMETERS => [
@@ -89,7 +89,7 @@ class TemplateHtmlTest extends ExtasTestCase
                 ]
             ]
         ]));
-        $opService->plugins()->create(new Plugin([
+        $tService->plugins()->create(new Plugin([
             Plugin::FIELD__CLASS => PluginTemplateHtmlNow::class,
             Plugin::FIELD__STAGE => PluginTemplateHtmlNow::STAGE,
             Plugin::FIELD__PARAMETERS => [
@@ -107,7 +107,7 @@ class TemplateHtmlTest extends ExtasTestCase
                 ]
             ]
         ]));
-        $opService->plugins()->create(new Plugin([
+        $tService->plugins()->create(new Plugin([
             Plugin::FIELD__CLASS => PluginTemplateHtmlText::class,
             Plugin::FIELD__STAGE => PluginTemplateHtmlText::STAGE,
             Plugin::FIELD__PARAMETERS => [
@@ -130,7 +130,7 @@ class TemplateHtmlTest extends ExtasTestCase
             ]
         ]));
 
-        $opService->withTemplates()->create(new WithTemplate([
+        $tService->withTemplates()->create(new WithTemplate([
             WithTemplate::FIELD__NAME => 'event',
             WithTemplate::FIELD__TITLE => 'Данные из события',
             WithTemplate::FIELD__DESCRIPTION => 'Подставить данные из события',
@@ -139,7 +139,7 @@ class TemplateHtmlTest extends ExtasTestCase
             WithTemplate::FIELD__CLASS => TestPluginEvent::class
         ]));
 
-        $opService->withTemplates()->create(new WithTemplate([
+        $tService->withTemplates()->create(new WithTemplate([
             WithTemplate::FIELD__NAME => 'now',
             WithTemplate::FIELD__TITLE => 'Текущие время и дата',
             WithTemplate::FIELD__DESCRIPTION => 'Подставить текущее время и/или дату',
@@ -148,7 +148,7 @@ class TemplateHtmlTest extends ExtasTestCase
             WithTemplate::FIELD__CLASS => TestPluginEvent::class
         ]));
 
-        $opService->withTemplates()->create(new WithTemplate([
+        $tService->withTemplates()->create(new WithTemplate([
             WithTemplate::FIELD__NAME => 'text',
             WithTemplate::FIELD__TITLE => 'Текст',
             WithTemplate::FIELD__DESCRIPTION => 'Вставить какой-либо текст',
@@ -157,7 +157,7 @@ class TemplateHtmlTest extends ExtasTestCase
             WithTemplate::FIELD__CLASS => TestPluginEvent::class
         ]));
 
-        $result = $opService->getTemplates($opService->withTemplates(), new ContextHtmlTrigger([
+        $result = $tService->getTemplates($tService->withTemplates(), new ContextHtmlTrigger([
             ContextHtmlTrigger::FIELD__RENDER => new TestRender(),
             ContextHtmlTrigger::FIELD__PARAMS => [
                 ContextHtmlTrigger::PARAM__TRIGGER => [
