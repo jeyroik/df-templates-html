@@ -3,8 +3,8 @@
   "description": "HTML templates fot DF",
   "require": {
     "jeyroik/df-templates": "0.*",
-    "jeyroik/df-templates-triggers": "0.*",
     "jeyroik/df-applications": "4.*",
+    "jeyroik/df-triggers": "4.*",
     "jeyroik/extas-system-options": "0.*"
   },
   "require-dev": {
