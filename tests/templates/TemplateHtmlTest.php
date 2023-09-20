@@ -3,6 +3,7 @@
 use deflou\components\applications\AppWriter;
 use deflou\components\instances\InstanceService;
 use deflou\components\plugins\templates\PluginTemplateHtml;
+use deflou\components\plugins\templates\PluginTemplateHtmlConditionBasic;
 use deflou\components\plugins\templates\PluginTemplateHtmlEvent;
 use deflou\components\plugins\templates\PluginTemplateHtmlNow;
 use deflou\components\plugins\templates\PluginTemplateHtmlText;
@@ -108,6 +109,24 @@ class TemplateHtmlTest extends ExtasTestCase
             ]
         ]));
         $tService->plugins()->create(new Plugin([
+            Plugin::FIELD__CLASS => PluginTemplateHtmlConditionBasic::class,
+            Plugin::FIELD__STAGE => PluginTemplateHtmlConditionBasic::STAGE,
+            Plugin::FIELD__PARAMETERS => [
+                PluginTemplateHtmlConditionBasic::PARAM__VIEW_HEADER => [
+                    IParam::FIELD__NAME => PluginTemplateHtmlConditionBasic::PARAM__VIEW_HEADER,
+                    IParam::FIELD__VALUE => __DIR__ . '/../resources/header.php'
+                ],
+                PluginTemplateHtmlConditionBasic::PARAM__VIEW_ITEM => [
+                    IParam::FIELD__NAME => PluginTemplateHtmlConditionBasic::PARAM__VIEW_ITEM,
+                    IParam::FIELD__VALUE => __DIR__ . '/../resources/item.php'
+                ],
+                PluginTemplateHtmlConditionBasic::PARAM__VIEW_ITEMS => [
+                    IParam::FIELD__NAME => PluginTemplateHtmlConditionBasic::PARAM__VIEW_ITEMS,
+                    IParam::FIELD__VALUE => __DIR__ . '/../resources/items.php'
+                ]
+            ]
+        ]));
+        $tService->plugins()->create(new Plugin([
             Plugin::FIELD__CLASS => PluginTemplateHtmlText::class,
             Plugin::FIELD__STAGE => PluginTemplateHtmlText::STAGE,
             Plugin::FIELD__PARAMETERS => [
@@ -143,6 +162,15 @@ class TemplateHtmlTest extends ExtasTestCase
             WithTemplate::FIELD__NAME => 'now',
             WithTemplate::FIELD__TITLE => 'Текущие время и дата',
             WithTemplate::FIELD__DESCRIPTION => 'Подставить текущее время и/или дату',
+            WithTemplate::FIELD__APPLICATION_NAME => 'test',
+            WithTemplate::FIELD__APPLY_TO_PARAM => ['*'],
+            WithTemplate::FIELD__CLASS => TestPluginEvent::class
+        ]));
+
+        $tService->withTemplates()->create(new WithTemplate([
+            WithTemplate::FIELD__NAME => 'basic_conditions',
+            WithTemplate::FIELD__TITLE => 'Базовые условия',
+            WithTemplate::FIELD__DESCRIPTION => 'Базовые условия',
             WithTemplate::FIELD__APPLICATION_NAME => 'test',
             WithTemplate::FIELD__APPLY_TO_PARAM => ['*'],
             WithTemplate::FIELD__CLASS => TestPluginEvent::class
@@ -201,6 +229,17 @@ class TemplateHtmlTest extends ExtasTestCase
             file_get_contents(__DIR__ . '/../resources/now.rendered.items.html'), 
             $nowResult['items']
         );
+
+        $this->assertArrayHasKey('basic_conditions', $result);
+
+        $bcResult = $result['basic_conditions'];
+        $this->assertIsArray($bcResult);
+        
+        $this->assertArrayHasKey(IContextHtml::RESULT__HEADER, $bcResult, 'Missed header in a result');
+        $this->assertEquals(file_get_contents(__DIR__ . '/../resources/basic_conditions.rendered.header.html'), $bcResult['header']);
+
+        $this->assertArrayHasKey(IContextHtml::RESULT__ITEMS, $bcResult, 'Missed items in a result');
+        $this->assertEquals(file_get_contents(__DIR__ . '/../resources/basic_conditions.rendered.items.html'), $bcResult['items']);
 
         $textResult = $result['text'];
         $this->assertIsArray($textResult);
